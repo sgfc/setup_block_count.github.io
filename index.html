@@ -12,22 +12,34 @@
         }
         table {
             margin-top: 20px;
-            font-size: 1.25rem; /* データ部分の文字サイズを大きく */
+            font-size: 1.25rem; /* データ部分の基本文字サイズを大きく */
         }
         th, td {
             text-align: center;
-            vertical-align: middle;
+            vertical-align: middle; /* 上下中央配置 */
             padding: 10px;
         }
         th {
             white-space: nowrap;
         }
+        td:first-child, /* ブロック */
+        td:nth-child(3) { /* 台車台数 */
+            font-size: 2.25rem; /* ブロックと台車台数をさらに大きく */
+        }
         .check-btn {
-            font-size: 1.5em;
+            font-size: 2.25rem;
             cursor: pointer;
             border: none;
             background: none;
             color: #007bff;
+        }
+        .reset-btn {
+            margin-top: 20px;
+            font-size: 1.25rem;
+        }
+        .reset-container {
+            display: flex;
+            justify-content: center; /* 左右中央に配置 */
         }
     </style>
 </head>
@@ -53,21 +65,65 @@
                 <!-- テーブルの内容はJavaScriptで動的に生成されます -->
             </tbody>
         </table>
+        <!-- リセットボタンを左右中央に配置 -->
+        <div class="reset-container">
+            <button class="btn btn-danger reset-btn" onclick="resetAllChecks()">すべてのチェックをリセット</button>
+        </div>
     </div>
 
     <script>
         // 座席データの配列
         const seatData = [
-            { block: 'P-1', layout: '7×3', seats: 21, carts: 1, checked: false },
-            { block: 'P-2', layout: '7×3', seats: 21, carts: 1, checked: false },
-            { block: 'P-3', layout: '7×3', seats: 21, carts: 1, checked: false },
-            { block: 'A-1', layout: '14×9', seats: 126, carts: 5, checked: false },
-            { block: 'A-2', layout: '14×9', seats: 126, carts: 5, checked: false },
-            { block: 'A-3', layout: '8×3+14×6', seats: 108, carts: 5, checked: false },
-            { block: 'A-4', layout: '14×9-10', seats: 116, carts: 5, checked: false },
-            { block: 'A-5', layout: '14×9', seats: 126, carts: 5, checked: false },
-            // 他のデータも同様に追加できます
-        ];
+    { block: 'P-1', layout: '7×3', seats: 21, carts: 1, checked: false },
+    { block: 'P-2', layout: '7×3', seats: 21, carts: 1, checked: false },
+    { block: 'P-3', layout: '7×3', seats: 21, carts: 1, checked: false },
+    { block: 'A-1', layout: '14×9', seats: 126, carts: 5, checked: false },
+    { block: 'A-2', layout: '14×9', seats: 126, carts: 5, checked: false },
+    { block: 'A-3', layout: '8×3+14×6', seats: 108, carts: 5, checked: false },
+    { block: 'A-4', layout: '14×9-10', seats: 116, carts: 5, checked: false },
+    { block: 'A-5', layout: '14×9', seats: 126, carts: 5, checked: false },
+    { block: 'A-6', layout: '14×9', seats: 126, carts: 5, checked: false },
+    { block: 'A-7', layout: '14×9', seats: 126, carts: 5, checked: false },
+    { block: 'A-8', layout: '14×9', seats: 126, carts: 5, checked: false },
+    { block: 'B-1', layout: '14×9', seats: 126, carts: 5, checked: false },
+    { block: 'B-2', layout: '14×9', seats: 126, carts: 5, checked: false },
+    { block: 'B-3', layout: '14×9', seats: 126, carts: 5, checked: false },
+    { block: 'B-4', layout: '14×9', seats: 126, carts: 5, checked: false },
+    { block: 'B-5', layout: '14×9', seats: 126, carts: 5, checked: false },
+    { block: 'B-6', layout: '14×9', seats: 126, carts: 5, checked: false },
+    { block: 'B-7', layout: '14×9', seats: 126, carts: 5, checked: false },
+    { block: 'B-8', layout: '14×9', seats: 126, carts: 5, checked: false },
+    { block: 'P-4', layout: '7×3', seats: 21, carts: 1, checked: false },
+    { block: 'P-5', layout: '7×3', seats: 21, carts: 1, checked: false },
+    { block: 'P-6', layout: '7×3', seats: 21, carts: 1, checked: false },
+    { block: 'S-1', layout: '12×11', seats: 132, carts: 6, checked: false },
+    { block: 'S-2', layout: '12×11', seats: 132, carts: 6, checked: false },
+    { block: 'S-3', layout: '12×8', seats: 96, carts: 4, checked: false },
+    { block: 'S-4', layout: '12×11', seats: 132, carts: 6, checked: false },
+    { block: 'C-1', layout: '14×9+9×2', seats: 144, carts: 6, checked: false },
+    { block: 'C-2', layout: '14×11', seats: 154, carts: 7, checked: false },
+    { block: 'C-3', layout: '14×11', seats: 154, carts: 7, checked: false },
+    { block: 'C-4', layout: '14×11', seats: 154, carts: 7, checked: false },
+    { block: 'C-5', layout: '14×11', seats: 154, carts: 7, checked: false },
+    { block: 'C-6', layout: '14×11', seats: 154, carts: 7, checked: false },
+    { block: 'D-1', layout: '14×11', seats: 154, carts: 7, checked: false },
+    { block: 'D-2', layout: '14×11-4', seats: 150, carts: 6, checked: false },
+    { block: 'D-3', layout: '14×11', seats: 154, carts: 7, checked: false },
+    { block: 'D-4', layout: '14×11', seats: 154, carts: 7, checked: false },
+    { block: 'D-5', layout: '14×11', seats: 154, carts: 7, checked: false },
+    { block: 'D-6', layout: '14×11', seats: 154, carts: 7, checked: false },
+    { block: 'E-1', layout: '14×11', seats: 154, carts: 7, checked: false },
+    { block: 'E-2', layout: '14×11', seats: 154, carts: 7, checked: false },
+    { block: 'E-3', layout: '14×9+9×2', seats: 144, carts: 6, checked: false },
+    { block: 'E-4', layout: '14×11', seats: 154, carts: 7, checked: false },
+    { block: 'E-5', layout: '14×11', seats: 154, carts: 7, checked: false },
+    { block: 'E-6', layout: '14×11', seats: 154, carts: 7, checked: false },
+    { block: 'S-5', layout: '12×11', seats: 132, carts: 6, checked: false },
+    { block: 'S-6', layout: '12×11', seats: 132, carts: 6, checked: false },
+    { block: 'S-7', layout: '12×11', seats: 132, carts: 6, checked: false },
+    { block: 'S-8', layout: '12×11', seats: 132, carts: 6, checked: false }
+];
+
 
         // ローカルストレージからデータを取得して適用
         function loadData() {
@@ -105,6 +161,16 @@
         // ローカルストレージにデータを保存
         function saveData() {
             localStorage.setItem('seatData', JSON.stringify(seatData));
+        }
+
+        // チェック状態をすべてリセット
+        function resetAllChecks() {
+            const confirmed = confirm('すべてのチェックをリセットしますか？'); // 確認ダイアログ
+            if (confirmed) {
+                seatData.forEach(row => row.checked = false);
+                saveData();
+                renderTable();
+            }
         }
 
         // 初期化
