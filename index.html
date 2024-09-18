@@ -12,10 +12,12 @@
         }
         table {
             margin-top: 20px;
+            font-size: 1.25rem; /* データ部分の文字サイズを大きく */
         }
         th, td {
             text-align: center;
             vertical-align: middle;
+            padding: 10px;
         }
         th {
             white-space: nowrap;
@@ -26,31 +28,6 @@
             border: none;
             background: none;
             color: #007bff;
-        }
-        @media (max-width: 768px) {
-            table, thead, tbody, th, td, tr {
-                display: block;
-                width: 100%;
-            }
-            thead {
-                display: none;
-            }
-            tr {
-                margin-bottom: 1rem;
-                border-bottom: 1px solid #ddd;
-            }
-            td {
-                text-align: right;
-                padding-left: 50%;
-                position: relative;
-            }
-            td::before {
-                content: attr(data-label);
-                position: absolute;
-                left: 10px;
-                font-weight: bold;
-                text-align: left;
-            }
         }
     </style>
 </head>
@@ -109,11 +86,10 @@
                 const checkSymbol = row.checked ? '✔' : '◯';
                 tableBody.innerHTML += `
                     <tr class="${checkedClass}">
-                        <td data-label="ブロック">${row.block}</td>
-                        <td data-label="座席配置">${row.layout}</td>
-                        <td data-label="座席数">${row.seats}</td>
-                        <td data-label="台車台数">${row.carts}</td>
-                        <td data-label=""><button class="check-btn" onclick="toggleCheck(${index})">${checkSymbol}</button></td>
+                        <td>${row.block}</td>
+                        <td>${row.layout}<br>${row.seats}</td>
+                        <td>${row.carts}</td>
+                        <td><button class="check-btn" onclick="toggleCheck(${index})">${checkSymbol}</button></td>
                     </tr>
                 `;
             });
