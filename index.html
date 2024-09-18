@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ブロックの座席数の概要</title>
+    <title>台車管理</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -15,23 +15,61 @@
         }
         th, td {
             text-align: center;
+            vertical-align: middle;
+        }
+        th {
+            white-space: nowrap;
         }
         .check-btn {
+            font-size: 1.5em;
             cursor: pointer;
+            border: none;
+            background: none;
+            color: #007bff;
+        }
+        @media (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+                width: 100%;
+            }
+            thead {
+                display: none;
+            }
+            tr {
+                margin-bottom: 1rem;
+                border-bottom: 1px solid #ddd;
+            }
+            td {
+                text-align: right;
+                padding-left: 50%;
+                position: relative;
+            }
+            td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 10px;
+                font-weight: bold;
+                text-align: left;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="text-center">ブロックの座席数の概要</h1>
+        <h1 class="text-center">台車管理</h1>
         <table class="table table-bordered table-striped">
             <thead class="thead-dark">
                 <tr>
-                    <th>座席ブロック</th>
-                    <th>一列の座席数×列数</th>
-                    <th>座席数</th>
-                    <th>台車の台数</th>
-                    <th>チェック</th>
+                    <th>ブロック</th>
+                    <th>
+                        <div>座席配置</div>
+                        <div>座席数</div>
+                    </th>
+                    <th>
+                        <div>台車</div>
+                        <div>台数</div>
+                    </th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody id="seatTable">
@@ -68,13 +106,14 @@
             tableBody.innerHTML = '';
             seatData.forEach((row, index) => {
                 const checkedClass = row.checked ? 'table-success' : '';
+                const checkSymbol = row.checked ? '✔' : '◯';
                 tableBody.innerHTML += `
                     <tr class="${checkedClass}">
-                        <td>${row.block}</td>
-                        <td>${row.layout}</td>
-                        <td>${row.seats}</td>
-                        <td>${row.carts}</td>
-                        <td><button class="btn btn-sm btn-primary check-btn" onclick="toggleCheck(${index})">チェック</button></td>
+                        <td data-label="ブロック">${row.block}</td>
+                        <td data-label="座席配置">${row.layout}</td>
+                        <td data-label="座席数">${row.seats}</td>
+                        <td data-label="台車台数">${row.carts}</td>
+                        <td data-label=""><button class="check-btn" onclick="toggleCheck(${index})">${checkSymbol}</button></td>
                     </tr>
                 `;
             });
