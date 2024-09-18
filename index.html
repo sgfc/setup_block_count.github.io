@@ -14,7 +14,7 @@
 
         table {
             margin-top: 20px;
-            font-size: 1.25rem;
+            font-size: 1rem;
             /* データ部分の基本文字サイズを大きく */
         }
 
@@ -34,16 +34,16 @@
         /* ブロック */
         td:nth-child(3) {
             /* 台車台数 */
-            font-size: 2.25rem;
+            font-size: 2rem;
             /* ブロックと台車台数をさらに大きく */
         }
 
         td:nth-child(4) {
-            width: 100px
+            width: 85px
         }
 
         .check-btn {
-            font-size: 2.25rem;
+            font-size: 2rem;
             cursor: pointer;
             border: none;
             background: none;
@@ -146,7 +146,8 @@
             { block: 'S-5', layout: '12×11', seats: 132, carts: 6, checked: false },
             { block: 'S-6', layout: '12×11', seats: 132, carts: 6, checked: false },
             { block: 'S-7', layout: '12×11', seats: 132, carts: 6, checked: false },
-            { block: 'S-8', layout: '12×11', seats: 132, carts: 6, checked: false }];
+            { block: 'S-8', layout: '12×11', seats: 132, carts: 6, checked: false }
+        ];
 
         // ローカルストレージからデータを取得して適用
         function loadData() {
