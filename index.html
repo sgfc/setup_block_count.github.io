@@ -1,1 +1,102 @@
-test
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ブロックの座席数の概要</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding: 20px;
+        }
+        table {
+            margin-top: 20px;
+        }
+        th, td {
+            text-align: center;
+        }
+        .check-btn {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">ブロックの座席数の概要</h1>
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>座席ブロック</th>
+                    <th>一列の座席数×列数</th>
+                    <th>座席数</th>
+                    <th>台車の台数</th>
+                    <th>チェック</th>
+                </tr>
+            </thead>
+            <tbody id="seatTable">
+                <!-- テーブルの内容はJavaScriptで動的に生成されます -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // 座席データの配列
+        const seatData = [
+            { block: 'P-1', layout: '7×3', seats: 21, carts: 1, checked: false },
+            { block: 'P-2', layout: '7×3', seats: 21, carts: 1, checked: false },
+            { block: 'P-3', layout: '7×3', seats: 21, carts: 1, checked: false },
+            { block: 'A-1', layout: '14×9', seats: 126, carts: 5, checked: false },
+            { block: 'A-2', layout: '14×9', seats: 126, carts: 5, checked: false },
+            { block: 'A-3', layout: '8×3+14×6', seats: 108, carts: 5, checked: false },
+            { block: 'A-4', layout: '14×9-10', seats: 116, carts: 5, checked: false },
+            { block: 'A-5', layout: '14×9', seats: 126, carts: 5, checked: false },
+            // 他のデータも同様に追加できます
+        ];
+
+        // ローカルストレージからデータを取得して適用
+        function loadData() {
+            const storedData = JSON.parse(localStorage.getItem('seatData'));
+            if (storedData) {
+                storedData.forEach((item, index) => seatData[index].checked = item.checked);
+            }
+        }
+
+        // テーブルのデータを表示
+        function renderTable() {
+            const tableBody = document.getElementById('seatTable');
+            tableBody.innerHTML = '';
+            seatData.forEach((row, index) => {
+                const checkedClass = row.checked ? 'table-success' : '';
+                tableBody.innerHTML += `
+                    <tr class="${checkedClass}">
+                        <td>${row.block}</td>
+                        <td>${row.layout}</td>
+                        <td>${row.seats}</td>
+                        <td>${row.carts}</td>
+                        <td><button class="btn btn-sm btn-primary check-btn" onclick="toggleCheck(${index})">チェック</button></td>
+                    </tr>
+                `;
+            });
+        }
+
+        // チェック状態を切り替える
+        function toggleCheck(index) {
+            seatData[index].checked = !seatData[index].checked;
+            saveData();
+            renderTable();
+        }
+
+        // ローカルストレージにデータを保存
+        function saveData() {
+            localStorage.setItem('seatData', JSON.stringify(seatData));
+        }
+
+        // 初期化
+        window.onload = function() {
+            loadData();
+            renderTable();
+        }
+    </script>
+</body>
+</html>
